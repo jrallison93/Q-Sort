@@ -1,6 +1,6 @@
 function doPost(e) {
   try {
-    const sheet = SpreadsheetApp.openById(qVpxXHVRne58loOYUZBh3smgubT5kDSvltUid99TNKk).getActiveSheet();
+    const sheet = SpreadsheetApp.openById("1qVpxXHVRne58loOYUZBh3smgubT5kDSvltUid99TNKk").getActiveSheet();
     const data = JSON.parse(e.parameter.results);
     const participant = e.parameter.participant || "Anonymous";
 
