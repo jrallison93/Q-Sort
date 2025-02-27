@@ -1,10 +1,54 @@
-function submitResults() {
-    let results = {};
-    const dropzones = document.querySelectorAll('.dropzone');
+const statements = document.querySelectorAll('.statement');
+const dropzones = document.querySelectorAll('.dropzone');
 
-    // Loop through the dropzones and gather the rankings
+// Loop through all statements and add drag event listeners
+statements.forEach(statement => {
+    statement.addEventListener('dragstart', (e) => {
+        e.dataTransfer.setData('text/plain', statement.innerText);
+        statement.style.visibility = 'hidden'; // Make the statement hidden during drag
+    });
+
+    statement.addEventListener('dragend', () => {
+        statement.style.visibility = 'visible'; // Make the statement visible after drag ends
+    });
+});
+
+// Loop through all dropzones and add dragover and drop event listeners
+dropzones.forEach(dropzone => {
+    dropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();  // Allow dropping in the dropzone
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const text = e.dataTransfer.getData('text/plain');
+
+        const maxItems = parseInt(dropzone.getAttribute('data-max'));
+        const currentItems = dropzone.querySelectorAll('.statement').length;
+
+        // Add statement if the dropzone isn't full
+        if (currentItems < maxItems && !Array.from(dropzone.children).some(child => child.innerText === text)) {
+            const newStatement = document.createElement('div');
+            newStatement.classList.add('statement');
+            newStatement.textContent = text;
+            newStatement.draggable = true;
+            dropzone.appendChild(newStatement);
+        }
+
+        // Optional: Add the full-dropzone style if max is exceeded
+        if (currentItems >= maxItems) {
+            dropzone.classList.add('full-dropzone');
+            setTimeout(() => dropzone.classList.remove('full-dropzone'), 1000);
+        }
+    });
+});
+
+// Function to collect the results and submit them
+function submitResults() {
+    const results = {};
+    
     dropzones.forEach((zone, index) => {
-        const rank = index - 3; // Assuming -3 to +3 ranking
+        const rank = index - 3; // Assign rankings from -3 to +3
         results[rank] = [];
         zone.querySelectorAll('.statement').forEach(statement => {
             results[rank].push(statement.innerText);
@@ -13,25 +57,17 @@ function submitResults() {
 
     // Get the participant identifier
     const participant = document.getElementById('participant').value;
+    if (!participant) {
+        alert('Please enter a participant identifier.');
+        return; // Prevent form submission if participant ID is empty
+    }
+
+    // Set the results and participant data in the hidden form
+    document.getElementById('results').value = JSON.stringify(results);
+    document.getElementById('hidden-participant').value = participant;
     
-    // Prepare the data to be sent to the Google Apps Script Web App.
-    const formData = new FormData();
-    formData.append('results', JSON.stringify(results));
-    formData.append('participant', participant);
+    // Submit the form to Google Apps Script
+    document.getElementById('qsortForm').submit();
 
-    // Make sure to use your correct Google Apps Script URL
-    const googleAppsScriptUrl = "https://script.google.com/macros/s/AKfycbzqayNc8OxC5Kbs9eJlrKDBwFxU_hcneEzmsXutDNFIZASO6CdgO8ittM0UDqBkT9_2kw/exec";
-
-    // Submit the data via POST to your Apps Script Web App
-    fetch(googleAppsScriptUrl, {
-        method: "POST",
-        body: formData,
-    })
-    .then(response => response.text())
-    .then(result => {
-        alert("Your responses have been submitted!");
-    })
-    .catch(error => {
-        alert("Error: " + error.message);
-    });
+    alert("Your responses have been submitted!");
 }
