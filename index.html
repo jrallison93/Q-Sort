@@ -68,6 +68,11 @@
             margin: 5px;
         }
 
+        .full-dropzone {
+            border-color: red;
+            background-color: #f8d7da;
+        }
+
         button {
             margin-top: 20px;
             padding: 10px 20px;
@@ -85,7 +90,7 @@
 <body>
 
     <h2>Q-Sort Grid</h2>
-    <p>Drag and drop the statements into the ranking grid.</p>
+    <p>Drag and drop the statements into the ranking grid. Each bin has a maximum number of skills, following a quasi-normal distribution.</p>
 
     <div id="participant-section">
         <label for="participant">Your Unique Identifier (choose a random word, and 4 numbers):</label><br>
@@ -98,16 +103,21 @@
         <div class="statement" draggable="true">Communication</div>
         <div class="statement" draggable="true">Problem Solving</div>
         <div class="statement" draggable="true">Programming</div>
+        <div class="statement" draggable="true">Other 1</div>
+        <div class="statement" draggable="true">Other 2</div>
+        <div class="statement" draggable="true">Other 3</div>
+        <div class="statement" draggable="true">Other 4</div>
+        <div class="statement" draggable="true">Other 5</div>
     </div>
 
     <div class="grid">
-        <div class="column"><p>-3</p><div class="dropzone"></div></div>
-        <div class="column"><p>-2</p><div class="dropzone"></div></div>
-        <div class="column"><p>-1</p><div class="dropzone"></div></div>
-        <div class="column"><p>0</p><div class="dropzone"></div></div>
-        <div class="column"><p>+1</p><div class="dropzone"></div></div>
-        <div class="column"><p>+2</p><div class="dropzone"></div></div>
-        <div class="column"><p>+3</p><div class="dropzone"></div></div>
+        <div class="column"><p>-3</p><div class="dropzone" data-max="2"></div></div>
+        <div class="column"><p>-2</p><div class="dropzone" data-max="3"></div></div>
+        <div class="column"><p>-1</p><div class="dropzone" data-max="4"></div></div>
+        <div class="column"><p>0</p><div class="dropzone" data-max="5"></div></div>
+        <div class="column"><p>+1</p><div class="dropzone" data-max="4"></div></div>
+        <div class="column"><p>+2</p><div class="dropzone" data-max="3"></div></div>
+        <div class="column"><p>+3</p><div class="dropzone" data-max="2"></div></div>
     </div>
 
     <button onclick="submitResults()">Submit</button>
@@ -122,6 +132,7 @@
         const statements = document.querySelectorAll('.statement');
         const dropzones = document.querySelectorAll('.dropzone');
 
+        // Loop through all statements and add drag event listeners
         statements.forEach(statement => {
             statement.addEventListener('dragstart', (e) => {
                 e.dataTransfer.setData('text/plain', statement.innerText);
@@ -133,6 +144,7 @@
             });
         });
 
+        // Loop through all dropzones and add dragover and drop event listeners
         dropzones.forEach(dropzone => {
             dropzone.addEventListener('dragover', (e) => {
                 e.preventDefault();
@@ -141,13 +153,27 @@
             dropzone.addEventListener('drop', (e) => {
                 e.preventDefault();
                 const text = e.dataTransfer.getData('text/plain');
-                if (!Array.from(dropzone.children).some(child => child.innerText === text)) {
-                    const newStatement = document.createElement('div');
-                    newStatement.classList.add('statement');
-                    newStatement.textContent = text;
-                    newStatement.draggable = true;
-                    dropzone.appendChild(newStatement);
+
+                // Get the maximum number of items allowed for this dropzone
+                const maxItems = parseInt(dropzone.getAttribute('data-max'));
+                const currentItems = dropzone.querySelectorAll('.statement').length;
+
+                // If the dropzone is not full, add the statement
+                if (currentItems < maxItems) {
+                    if (!Array.from(dropzone.children).some(child => child.innerText === text)) {
+                        const newStatement = document.createElement('div');
+                        newStatement.classList.add('statement');
+                        newStatement.textContent = text;
+                        newStatement.draggable = true;
+                        dropzone.appendChild(newStatement);
+                    }
+                } else {
+                    // If the dropzone is full, visually indicate it
+                    dropzone.classList.add('full-dropzone');
                 }
+
+                // Reset the dropzone style after a short delay
+                setTimeout(() => dropzone.classList.remove('full-dropzone'), 1000);
             });
         });
 
