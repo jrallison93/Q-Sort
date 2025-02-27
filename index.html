@@ -44,6 +44,7 @@
             border: 1px solid #000;
             margin: 5px;
             cursor: grab;
+            z-index: 10; /* Ensure draggable items are on top */
         }
 
         .grid {
@@ -129,74 +130,6 @@
         <input type="hidden" name="results" id="results">
         <input type="hidden" name="participant" id="hidden-participant">
     </form>
-
-    <script>
-        const statements = document.querySelectorAll('.statement');
-        const dropzones = document.querySelectorAll('.dropzone');
-
-        // Loop through all statements and add drag event listeners
-        statements.forEach(statement => {
-            statement.addEventListener('dragstart', (e) => {
-                e.dataTransfer.setData('text/plain', statement.innerText);
-                setTimeout(() => statement.style.display = 'none', 0);
-            });
-
-            statement.addEventListener('dragend', () => {
-                statement.style.display = 'block';
-            });
-        });
-
-        // Loop through all dropzones and add dragover and drop event listeners
-        dropzones.forEach(dropzone => {
-            dropzone.addEventListener('dragover', (e) => {
-                e.preventDefault();
-            });
-
-            dropzone.addEventListener('drop', (e) => {
-                e.preventDefault();
-                const text = e.dataTransfer.getData('text/plain');
-
-                // Get the maximum number of items allowed for this dropzone
-                const maxItems = parseInt(dropzone.getAttribute('data-max'));
-                const currentItems = dropzone.querySelectorAll('.statement').length;
-
-                // If the dropzone is not full, add the statement
-                if (currentItems < maxItems) {
-                    if (!Array.from(dropzone.children).some(child => child.innerText === text)) {
-                        const newStatement = document.createElement('div');
-                        newStatement.classList.add('statement');
-                        newStatement.textContent = text;
-                        newStatement.draggable = true;
-                        dropzone.appendChild(newStatement);
-                    }
-                } else {
-                    // If the dropzone is full, visually indicate it
-                    dropzone.classList.add('full-dropzone');
-                }
-
-                // Reset the dropzone style after a short delay
-                setTimeout(() => dropzone.classList.remove('full-dropzone'), 1000);
-            });
-        });
-
-        function submitResults() {
-            let results = {};
-            dropzones.forEach((zone, index) => {
-                const rank = index - 3; // Assign rankings from -3 to +3
-                results[rank] = [];
-                zone.querySelectorAll('.statement').forEach(statement => {
-                    results[rank].push(statement.innerText);
-                });
-            });
-
-            const participant = document.getElementById('participant').value;
-            document.getElementById('results').value = JSON.stringify(results);
-            document.getElementById('hidden-participant').value = participant;
-            document.getElementById('qsortForm').submit();
-
-            alert("Your responses have been submitted!");
-        }
-    </script>
 
 </body>
 </html>
