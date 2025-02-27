@@ -1,18 +1,3 @@
-function doPost(e) {
-  try {
-    const sheet = SpreadsheetApp.openById("1qVpxXHVRne58loOYUZBh3smgubT5kDSvltUid99TNKk").getActiveSheet();
-    const data = JSON.parse(e.parameter.results);
-    const participant = e.parameter.participant || "Anonymous";
-
-    sheet.appendRow([new Date(), participant, JSON.stringify(data)]);
-
-    return ContentService.createTextOutput("Success").setMimeType(ContentService.MimeType.TEXT);
-  } catch (error) {
-    return ContentService.createTextOutput("Error: " + error.message)
-      .setMimeType(ContentService.MimeType.TEXT);
-  }
-}
-
 function submitResults() {
     let results = {};
     const dropzones = document.querySelectorAll('.dropzone');
@@ -26,9 +11,22 @@ function submitResults() {
     });
 
     const participant = document.getElementById('participant').value;
-    document.getElementById('results').value = JSON.stringify(results);
-    document.getElementById('participant').value = participant;
-    document.getElementById('qsortForm').submit();
+    
+    // Prepare the data to be sent to the Google Apps Script Web App.
+    const formData = new FormData();
+    formData.append('results', JSON.stringify(results));
+    formData.append('participant', participant);
 
-    alert("Your responses have been submitted!");
+    // Submit the data via POST to your Apps Script URL
+    fetch("https://docs.google.com/spreadsheets/d/1qVpxXHVRne58loOYUZBh3smgubT5kDSvltUid99TNKk/edit?gid=0#gid=0", {
+        method: "POST",
+        body: formData,
+    })
+    .then(response => response.text())
+    .then(result => {
+        alert("Your responses have been submitted!");
+    })
+    .catch(error => {
+        alert("Error: " + error.message);
+    });
 }
