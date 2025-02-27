@@ -45,12 +45,12 @@ const dropzones = document.querySelectorAll('.dropzone');
 // Loop through all statements and add drag event listeners
 statements.forEach(statement => {
     statement.addEventListener('dragstart', (e) => {
-        // Allow only draggable statements
+        // Allow only draggable statements that are not 'used'
         if (statement.classList.contains('used')) {
             e.preventDefault();  // Don't allow drag if it's already used
             return;
         }
-        
+
         e.dataTransfer.setData('text/plain', statement.innerText);
         setTimeout(() => statement.style.display = 'none', 0); // Hide the statement while dragging
     });
@@ -70,12 +70,12 @@ dropzones.forEach(dropzone => {
         e.preventDefault();
         const text = e.dataTransfer.getData('text/plain');
         const statementToDrop = Array.from(statements).find(statement => statement.innerText === text);
-        
-        // Check if the statement is already used and if it's not already in this dropzone
+
+        // If the statement is valid and not yet placed, process the drop
         if (statementToDrop && !statementToDrop.classList.contains('used')) {
             // Mark the statement as used
             statementToDrop.classList.add('used');
-            statementToDrop.setAttribute('draggable', 'false');  // Disable dragging after placement
+            statementToDrop.setAttribute('draggable', 'true');  // Enable dragging once placed in a dropzone
 
             // Remove from any other dropzone first
             const currentDropzone = statementToDrop.parentElement;
