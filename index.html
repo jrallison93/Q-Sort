@@ -112,7 +112,7 @@
 
     <button onclick="submitResults()">Submit</button>
 
-
+    <!-- Hidden form that submits to Google Apps Script -->
     <form id="qsortForm" action="https://script.google.com/macros/s/AKfycbye60wRTM8M2hFxBEQa_tx67fZ0TG5EAdjLP4NC11-USKvwc2ghRfvLU0v47aJfvFFL/exec" method="POST" style="display:none;">
         <input type="hidden" name="results" id="results">
         <input type="hidden" name="participant" id="hidden-participant">
@@ -154,7 +154,7 @@
         function submitResults() {
             let results = {};
             dropzones.forEach((zone, index) => {
-                const rank = index - 3;
+                const rank = index - 3; // Assign rankings from -3 to +3
                 results[rank] = [];
                 zone.querySelectorAll('.statement').forEach(statement => {
                     results[rank].push(statement.innerText);
