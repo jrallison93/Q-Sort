@@ -20,7 +20,7 @@ function submitResults() {
     formData.append('participant', participant);
 
     // Make sure to use your correct Google Apps Script URL
-    const googleAppsScriptUrl = "https://script.google.com/macros/s/AKfycbwMH_MHfCRNBxP_hE2vWEWmdAxATSjiQlAgJNrR_rURYnff4wbH3FuCXNqNXtEE1tsf3A/exec";
+    const googleAppsScriptUrl = "https://script.google.com/macros/s/AKfycbzqayNc8OxC5Kbs9eJlrKDBwFxU_hcneEzmsXutDNFIZASO6CdgO8ittM0UDqBkT9_2kw/exec";
 
     // Submit the data via POST to your Apps Script Web App
     fetch(googleAppsScriptUrl, {
