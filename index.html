@@ -88,16 +88,16 @@
     <p>Drag and drop the statements into the ranking grid.</p>
 
     <div id="participant-section">
-        <label for="participant">Your Name (optional):</label><br>
-        <input type="text" id="participant" placeholder="Enter your name">
+        <label for="participant">Your Unique Identifier (choose a random word, and 4 numbers):</label><br>
+        <input type="text" id="participant" placeholder="Enter your unique identifier">
     </div>
 
     <div id="statements">
-        <div class="statement" draggable="true">Statement 1</div>
-        <div class="statement" draggable="true">Statement 2</div>
-        <div class="statement" draggable="true">Statement 3</div>
-        <div class="statement" draggable="true">Statement 4</div>
-        <div class="statement" draggable="true">Statement 5</div>
+        <div class="statement" draggable="true">Leadership</div>
+        <div class="statement" draggable="true">Teamwork</div>
+        <div class="statement" draggable="true">Communication</div>
+        <div class="statement" draggable="true">Problem Solving</div>
+        <div class="statement" draggable="true">Programming</div>
     </div>
 
     <div class="grid">
@@ -112,8 +112,6 @@
 
     <button onclick="submitResults()">Submit</button>
 
-    <label for="participant">Your Name (optional):</label>
-<input type="text" id="participant" placeholder="Enter a unique identifier">
 
     <form id="qsortForm" action="https://script.google.com/macros/s/AKfycbye60wRTM8M2hFxBEQa_tx67fZ0TG5EAdjLP4NC11-USKvwc2ghRfvLU0v47aJfvFFL/exec" method="POST" style="display:none;">
         <input type="hidden" name="results" id="results">
