@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q-Sort Grid</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h2 {
+            margin-top: 20px;
+        }
+
+        #participant-section {
+            margin: 20px 0;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            width: 300px;
+            margin-top: 5px;
+        }
+
+        #statements {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .statement {
+            background-color: #fff;
+            padding: 10px;
+            border: 1px solid #000;
+            margin: 5px;
+            cursor: grab;
+        }
+
+        .grid {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .dropzone {
+            width: 100px;
+            min-height: 60px;
+            border: 2px dashed #ccc;
+            padding: 5px;
+            background-color: #eaeaea;
+            margin: 5px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Q-Sort Grid</h2>
+    <p>Drag and drop the statements into the ranking grid.</p>
+
+    <div id="participant-section">
+        <label for="participant">Your Name (optional):</label><br>
+        <input type="text" id="participant" placeholder="Enter your name">
+    </div>
+
+    <div id="statements">
+        <div class="statement" draggable="true">Statement 1</div>
+        <div class="statement" draggable="true">Statement 2</div>
+        <div class="statement" draggable="true">Statement 3</div>
+        <div class="statement" draggable="true">Statement 4</div>
+        <div class="statement" draggable="true">Statement 5</div>
+    </div>
+
+    <div class="grid">
+        <div class="column"><p>-3</p><div class="dropzone"></div></div>
+        <div class="column"><p>-2</p><div class="dropzone"></div></div>
+        <div class="column"><p>-1</p><div class="dropzone"></div></div>
+        <div class="column"><p>0</p><div class="dropzone"></div></div>
+        <div class="column"><p>+1</p><div class="dropzone"></div></div>
+        <div class="column"><p>+2</p><div class="dropzone"></div></div>
+        <div class="column"><p>+3</p><div class="dropzone"></div></div>
+    </div>
+
+    <button onclick="submitResults()">Submit</button>
+
+    <form id="qsortForm" action="YOUR-APPS-SCRIPT-URL" method="POST" style="display:none;">
+        <input type="hidden" name="results" id="results">
+        <input type="hidden" name="participant" id="hidden-participant">
+    </form>
+
+    <script>
+        const statements = document.querySelectorAll('.statement');
+        const dropzones = document.querySelectorAll('.dropzone');
+
+        statements.forEach(statement => {
+            statement.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text/plain', statement.innerText);
+                setTimeout(() => statement.style.display = 'none', 0);
+            });
+
+            statement.addEventListener('dragend', () => {
+                statement.style.display = 'block';
+            });
+        });
+
+        dropzones.forEach(dropzone => {
+            dropzone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+            });
+
+            dropzone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                const text = e.dataTransfer.getData('text/plain');
+                if (!Array.from(dropzone.children).some(child => child.innerText === text)) {
+                    const newStatement = document.createElement('div');
+                    newStatement.classList.add('statement');
+                    newStatement.textContent = text;
+                    newStatement.draggable = true;
+                    dropzone.appendChild(newStatement);
+                }
+            });
+        });
+
+        function submitResults() {
+            let results = {};
+            dropzones.forEach((zone, index) => {
+                const rank = index - 3;
+                results[rank] = [];
+                zone.querySelectorAll('.statement').forEach(statement => {
+                    results[rank].push(statement.innerText);
+                });
+            });
+
+            const participant = document.getElementById('participant').value;
+            document.getElementById('results').value = JSON.stringify(results);
+            document.getElementById('hidden-participant').value = participant;
+            document.getElementById('qsortForm').submit();
+
+            alert("Your responses have been submitted!");
+        }
+    </script>
+
+</body>
+</html>
