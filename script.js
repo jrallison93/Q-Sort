@@ -29,7 +29,7 @@ function submitResults() {
     })
     .then(response => response.text())
     .then(result => {
-        alert("Your responses have been submitted!");
+        alert("Your responses have been submitted! Thank you.");
     })
     .catch(error => {
         alert("Error: " + error.message);
