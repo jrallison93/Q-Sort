@@ -1,3 +1,37 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const submitButton = document.querySelector('button');
+    
+    submitButton.addEventListener('click', (e) => {
+        e.preventDefault();  // Prevent the form from submitting immediately
+
+        // Check if all dropzones are filled
+        if (checkDropzones()) {
+            // If dropzones are filled, proceed to submit the results
+            submitResults();
+        } else {
+            // If any dropzone is not filled, show an alert and prevent submission
+            alert('Please fill all dropzones to their maximum capacity before submitting.');
+        }
+    });
+
+    // Check if all dropzones are filled
+    function checkDropzones() {
+        let allFilled = true;
+        const dropzones = document.querySelectorAll('.dropzone'); // Ensure you're targeting dropzones correctly
+        dropzones.forEach(dropzone => {
+            const maxItems = parseInt(dropzone.getAttribute('data-max'));
+            const currentItems = dropzone.querySelectorAll('.statement').length;
+            if (currentItems < maxItems) {
+                allFilled = false;
+            }
+        });
+        return allFilled;
+    }
+
+
+
+
+
 function submitResults() {
     let results = {};
     const dropzones = document.querySelectorAll('.dropzone');
