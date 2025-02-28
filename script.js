@@ -1,8 +1,3 @@
-document.addEventListener('DOMContentLoaded', () => {
-   
-
-
-
 function submitResults() {
     let results = {};
     const dropzones = document.querySelectorAll('.dropzone');
@@ -42,49 +37,3 @@ function submitResults() {
 }
 
 
-
-
-
-const statements = document.querySelectorAll('.statement');
-const dropzones = document.querySelectorAll('.dropzone');
-
-// Track the statement being dragged
-let draggedStatement = null;
-
-// Add dragstart and dragend event listeners to statements
-statements.forEach(statement => {
-    statement.addEventListener('dragstart', (e) => {
-        draggedStatement = statement;
-        setTimeout(() => statement.style.display = 'none', 0); // Hide while dragging
-    });
-
-    statement.addEventListener('dragend', () => {
-        draggedStatement.style.display = 'block'; // Show after dragging
-        draggedStatement = null;
-    });
-});
-
-// Add dragover and drop event listeners to drop zones
-dropzones.forEach(dropzone => {
-    dropzone.addEventListener('dragover', (e) => {
-        e.preventDefault(); // Allow dropping
-    });
-
-    dropzone.addEventListener('drop', (e) => {
-        e.preventDefault();
-
-        if (draggedStatement) {
-            const maxItems = parseInt(dropzone.getAttribute('data-max'));
-            const currentItems = dropzone.querySelectorAll('.statement').length;
-
-            // If dropzone is not full and statement isn't already there, move it
-            if (currentItems < maxItems && !Array.from(dropzone.children).includes(draggedStatement)) {
-                dropzone.appendChild(draggedStatement);
-            } else {
-                alert("This drop zone is full!");
-            }
-        }
-    });
-});
-
-      });
