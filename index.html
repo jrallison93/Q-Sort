@@ -177,23 +177,6 @@
             });
         });
 
-        function submitResults() {
-            let results = {};
-            dropzones.forEach((zone, index) => {
-                const rank = index - 3; // Assign rankings from -3 to +3
-                results[rank] = [];
-                zone.querySelectorAll('.statement').forEach(statement => {
-                    results[rank].push(statement.innerText);
-                });
-            });
-
-            const participant = document.getElementById('participant').value;
-            document.getElementById('results').value = JSON.stringify(results);
-            document.getElementById('hidden-participant').value = participant;
-            document.getElementById('qsortForm').submit();
-
-            alert("Your responses have been submitted!");
-        }
     </script>
 
 </body>
