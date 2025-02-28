@@ -90,15 +90,8 @@
 <body>
 
     <h2>Enhancing Employability in Computer Science Education: A Comprehensive Examination of Employability Skills, Perspectives, and Priorities.</h2>
-
-    <p> Q-Sort Grid</p>
     
-    <p>Place (Drag and Drop) the following statements (skills) in the grid below, according to how you rank them from least important (-3) to most important (+3) for a career in computer science</p>
-
-    <div id="participant-section">
-        <label for="participant">Your Unique Identifier (choose a random word, and 4 numbers):</label><br>
-        <input type="text" id="participant" placeholder="Enter your unique identifier">
-    </div>
+    <p>Place the following statements in the grid below, according to how you rank them from least important (-3) to most important (+3) for a career in computer science</p>
 
     <div id="statements">
         <div class="statement" draggable="true">Leadership</div>
@@ -123,6 +116,11 @@
         <div class="column"><p>+3</p><div class="dropzone" data-max="2"></div></div>
     </div>
 
+    <div id="participant-section">
+        <label for="participant">Your Unique Identifier (choose a random word, and 4 numbers):</label><br>
+        <input type="text" id="participant" placeholder="Enter your unique identifier">
+    </div>
+    
     <button onclick="submitResults()">Submit</button>
 
     <!-- Hidden form that submits to Google Apps Script -->
