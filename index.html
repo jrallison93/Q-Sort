@@ -188,8 +188,20 @@ const dropzones = document.querySelectorAll('.dropzone');
 const statementContainer = document.getElementById('statements'); // Original container for statements
 const submitButton = document.querySelector('button');
         
-        // Check if all dropzones are filled to their max capacity
-        function checkDropzones() {
+     submitButton.addEventListener('click', (e) => {
+    e.preventDefault();  // Prevent the form from submitting immediately
+
+    if (checkDropzones()) {
+        // If all dropzones are filled, trigger the form submission manually
+        const form = document.getElementById('qsortForm');
+        form.submit();  // This will submit the form only if validation passes
+    } else {
+        // If any dropzone is not filled, show an alert and prevent submission
+        alert('Please fill all dropzones to their maximum capacity before submitting.');
+    }
+});
+
+function checkDropzones() {
     let allFilled = true;
     dropzones.forEach(dropzone => {
         const maxItems = parseInt(dropzone.getAttribute('data-max'));
@@ -199,21 +211,7 @@ const submitButton = document.querySelector('button');
         }
     });
     return allFilled;
-}
-
-        // Add the event listener to the submit button
-       submitButton.addEventListener('click', (e) => {
-    e.preventDefault();  // Prevent the form from submitting immediately
-    
-    if (checkDropzones()) {
-        // If all dropzones are filled, submit the form
-        document.getElementById('qsortForm').submit();
-    } else {
-        // If any dropzone is not filled, show an alert and prevent submission
-        alert('Please fill all dropzones to their maximum capacity before submitting.');
-        return false;  // Ensure the form doesn't submit even if the button is clicked
-    }
-});        
+}       
 
 statements.forEach(statement => {
     statement.dataset.originalParent = 'statements'; // Store initial container ID
