@@ -4,7 +4,7 @@
         let allFilled = true;
         const dropzones = document.querySelectorAll('.dropzone'); // Ensure you're targeting dropzones correctly
         dropzones.forEach(dropzone => {
-            const maxItems = parseInt(dropzone.getAttribute('data-max'));
+            const maxItems = parseInt(dropzone.getAttribute('data-max')); 
             const currentItems = dropzone.querySelectorAll('.statement').length;
             if (currentItems < maxItems) {
                 allFilled = false;
