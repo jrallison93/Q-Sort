@@ -183,9 +183,34 @@ in academic journal articles. Please note, that when we publish the results, no 
         
         
         
-        const statements = document.querySelectorAll('.statement');
+const statements = document.querySelectorAll('.statement');
 const dropzones = document.querySelectorAll('.dropzone');
 const statementContainer = document.getElementById('statements'); // Original container for statements
+const submitButton = document.querySelector('button');
+        
+        // Check if all dropzones are filled to their max capacity
+        function checkDropzones() {
+            let allFilled = true;
+            dropzones.forEach(dropzone => {
+                const maxItems = parseInt(dropzone.getAttribute('data-max'));
+                const currentItems = dropzone.querySelectorAll('.statement').length;
+                if (currentItems < maxItems) {
+                    allFilled = false;
+                }
+            });
+            return allFilled;
+        }
+
+        // Add the event listener to the submit button
+        submitButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (checkDropzones()) {
+                // If all dropzones are filled, proceed with form submission
+                document.getElementById('qsortForm').submit();
+            } else {
+                alert('Please fill all dropzones to their maximum capacity before submitting.');
+            }
+        });        
 
 statements.forEach(statement => {
     statement.dataset.originalParent = 'statements'; // Store initial container ID
