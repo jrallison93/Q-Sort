@@ -1,22 +1,3 @@
-
-    // Check if all dropzones are filled
-    function checkDropzones() {
-        let allFilled = true;
-        const dropzones = document.querySelectorAll('.dropzone'); // Ensure you're targeting dropzones correctly
-        dropzones.forEach(dropzone => {
-            const maxItems = parseInt(dropzone.getAttribute('data-max')); 
-            const currentItems = dropzone.querySelectorAll('.statement').length;
-            if (currentItems < maxItems) {
-                allFilled = false;
-            }
-        });
-        return allFilled;
-    }
-
-
-
-
-
 function submitResults() {
     let results = {};
     const dropzones = document.querySelectorAll('.dropzone');
