@@ -1,18 +1,3 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const submitButton = document.querySelector('button');
-    
-    submitButton.addEventListener('click', (e) => {
-        e.preventDefault();  // Prevent the form from submitting immediately
-
-        // Check if all dropzones are filled
-        if (checkDropzones()) {
-            // If dropzones are filled, proceed to submit the results
-            submitResults();
-        } else {
-            // If any dropzone is not filled, show an alert and prevent submission
-            alert('Please fill all dropzones to their maximum capacity before submitting.');
-        }
-    });
 
     // Check if all dropzones are filled
     function checkDropzones() {
