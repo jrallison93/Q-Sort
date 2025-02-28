@@ -1,3 +1,8 @@
+document.addEventListener('DOMContentLoaded', () => {
+   
+
+
+
 function submitResults() {
     let results = {};
     const dropzones = document.querySelectorAll('.dropzone');
@@ -81,3 +86,5 @@ dropzones.forEach(dropzone => {
         }
     });
 });
+
+      });
