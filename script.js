@@ -13,7 +13,7 @@ function submitResults() {
 
     // Get the participant identifier
     const participant = document.getElementById('participant').value;
-    
+
     // Prepare the data to be sent to the Google Apps Script Web App.
     const formData = new FormData();
     formData.append('results', JSON.stringify(results));
@@ -35,5 +35,3 @@ function submitResults() {
         alert("Error: " + error.message);
     });
 }
-
-
