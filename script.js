@@ -1,4 +1,11 @@
 function submitResults() {
+    const unplacedStatements = document.querySelectorAll('#statements .statement');
+    if (unplacedStatements.length > 0) {
+            alert("Please place all statements into the grid before submitting.");
+            return; // Stop the function if not all statements are placed
+    }
+
+    
     let results = {};
     const dropzones = document.querySelectorAll('.dropzone');
 
