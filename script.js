@@ -36,7 +36,9 @@ function submitResults() {
     })
     .then(response => response.text())
     .then(result => {
-        alert("Your responses have been submitted! Thank you.");
+        // previous was: alert("Your responses have been submitted! Thank you.");
+        // Redirect on success
+        window.location.href = "thankyou.html";
     })
     .catch(error => {
         alert("Error: " + error.message);
