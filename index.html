@@ -244,6 +244,13 @@ statementContainer.addEventListener('drop', (e) => {
     }
 });
 
+// Allow double-click to return a statement to the original pool
+statements.forEach(statement => {
+    statement.addEventListener('dblclick', () => {
+        statementContainer.appendChild(statement);
+    });
+});
+        
     </script>
 
 </body>
